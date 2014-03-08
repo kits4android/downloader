@@ -1593,7 +1593,7 @@
 .end method
 
 .method public getDeviceId()Ljava/lang/String;
-    .registers 4
+    .registers 12
 
     .prologue
     const/4 v1, 0x0
@@ -1613,6 +1613,24 @@
 
     .line 252
     :goto_9
+    invoke-static {}, Ljava/lang/Math;->random()D
+
+    move-result-wide v3
+
+    const-wide v5, 0x412e847e00000000L
+
+    mul-double/2addr v3, v5
+
+    double-to-long v3, v3
+
+    const-wide v5, 0x13fbc8e5446c0L
+
+    add-long/2addr v3, v5
+
+    invoke-static {v3, v4}, Ljava/lang/String;->valueOf(J)Ljava/lang/String;
+
+    move-result-object v1
+
     return-object v1
 
     .line 249
