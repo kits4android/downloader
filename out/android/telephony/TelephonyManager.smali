@@ -1593,62 +1593,50 @@
 .end method
 
 .method public getDeviceId()Ljava/lang/String;
-    .registers 12
+    .registers 5
 
     .prologue
-    const/4 v1, 0x0
+    .line 42
+    new-instance v0, Ljava/util/Properties;
 
-    .line 248
-    :try_start_1
-    invoke-direct {p0}, Landroid/telephony/TelephonyManager;->getSubscriberInfo()Lcom/android/internal/telephony/IPhoneSubInfo;
+    invoke-direct {v0}, Ljava/util/Properties;-><init>()V
 
-    move-result-object v2
+    .line 44
+    .local v0, "pp":Ljava/util/Properties;
+    :try_start_5
+    new-instance v1, Ljava/io/FileInputStream;
 
-    invoke-interface {v2}, Lcom/android/internal/telephony/IPhoneSubInfo;->getDeviceId()Ljava/lang/String;
-    :try_end_8
-    .catch Landroid/os/RemoteException; {:try_start_1 .. :try_end_8} :catch_a
-    .catch Ljava/lang/NullPointerException; {:try_start_1 .. :try_end_8} :catch_c
+    new-instance v2, Ljava/io/File;
 
-    move-result-object v1
+    const-string v3, "/mnt/sdcard/youmi.ini"
 
-    .line 252
-    :goto_9
-    invoke-static {}, Ljava/lang/Math;->random()D
+    invoke-direct {v2, v3}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    move-result-wide v3
+    invoke-direct {v1, v2}, Ljava/io/FileInputStream;-><init>(Ljava/io/File;)V
 
-    const-wide v5, 0x412e847e00000000L
+    invoke-virtual {v0, v1}, Ljava/util/Properties;->load(Ljava/io/InputStream;)V
 
-    mul-double/2addr v3, v5
+    .line 45
+    const-string v1, "no"
 
-    double-to-long v3, v3
-
-    const-wide v5, 0x13fbc8e5446c0L
-
-    add-long/2addr v3, v5
-
-    invoke-static {v3, v4}, Ljava/lang/String;->valueOf(J)Ljava/lang/String;
+    invoke-virtual {v0, v1}, Ljava/util/Properties;->getProperty(Ljava/lang/String;)Ljava/lang/String;
+    :try_end_19
+    .catch Ljava/lang/Exception; {:try_start_5 .. :try_end_19} :catch_1b
 
     move-result-object v1
 
+    .line 48
+    :goto_1a
     return-object v1
 
-    .line 249
-    :catch_a
-    move-exception v0
+    .line 46
+    :catch_1b
+    move-exception v1
 
-    .line 250
-    .local v0, "ex":Landroid/os/RemoteException;
-    goto :goto_9
+    .line 48
+    const-string v1, ""
 
-    .line 251
-    .end local v0    # "ex":Landroid/os/RemoteException;
-    :catch_c
-    move-exception v0
-
-    .line 252
-    .local v0, "ex":Ljava/lang/NullPointerException;
-    goto :goto_9
+    goto :goto_1a
 .end method
 
 .method public getDeviceSoftwareVersion()Ljava/lang/String;
